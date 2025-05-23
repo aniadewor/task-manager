@@ -1,0 +1,41 @@
+<h2>Lista zadań</h2>
+<div class="filters">
+  <label>
+    Filtruj po statusie:
+    <select [(ngModel)]="filterStatus" (change)="applyFilters()">
+      <option value="all">Wszystkie</option>
+      <option value="todo">Do zrobienia</option>
+      <option value="in_progress">W trakcie</option>
+      <option value="done">Ukończone</option>
+    </select>
+  </label>
+
+  <label>
+    Sortuj według:
+    <select [(ngModel)]="sortBy" (change)="applyFilters()">
+      <option value="createdAt">Data dodania</option>
+      <option value="priority">Priorytet</option>
+    </select>
+  </label>
+</div>
+
+<ul>
+  <li *ngFor="let task of tasks">
+    <b>{{ task.title }}</b> ({{ task.priority }}) - {{ task.status }}
+
+    <a [routerLink]="['/tasks/edit', task.id]">Edytuj</a>
+
+    <button
+      *ngIf="userRole === 'admin' || task.ownerId === currentUserId"
+      (click)="deleteTask(task)">
+      Usuń
+    </button>
+
+    <button
+      *ngIf="task.status !== 'done' && (userRole === 'admin' || task.ownerId === currentUserId)"
+      (click)="markAsDone(task)">
+      Zakończ
+    </button>
+  </li>
+</ul>
+

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import { Firestore, collection, getDocs, doc, getDoc } from '@angular/fire/firestore';
-
+import { User } from './models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -9,13 +9,13 @@ import { Firestore, collection, getDocs, doc, getDoc } from '@angular/fire/fires
 export class UserService {
   constructor(private firestore: Firestore, private auth: Auth) {}
 
-  async getCurrentUserData() {
+   async getCurrentUserData(): Promise<User | null> {
     const user = this.auth.currentUser;
     if (!user) return null;
     const userDocRef = doc(this.firestore, 'users', user.uid);
     const userSnap = await getDoc(userDocRef);
     if (userSnap.exists()) {
-      return userSnap.data();
+      return userSnap.data() as User; // WYMUSZ TYP User tutaj
     } else {
       return null;
     }

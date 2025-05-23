@@ -1,0 +1,35 @@
+<div *ngIf="task">
+  <h2>Edycja zadania: {{ task.title }}</h2>
+
+  <form (ngSubmit)="saveTask()">
+    <label>
+      Tytuł:
+      <input type="text" [(ngModel)]="task.title" name="title" required>
+    </label>
+
+    <label>
+      Opis:
+      <textarea [(ngModel)]="task.description" name="description"></textarea>
+    </label>
+
+    <label>
+      Priorytet:
+      <select [(ngModel)]="task.priority" name="priority">
+        <option value="low">Niski</option>
+        <option value="medium">Średni</option>
+        <option value="high">Wysoki</option>
+      </select>
+    </label>
+
+    <label>
+      Status:
+      <select [(ngModel)]="task.status" name="status">
+        <option value="todo">Do zrobienia</option>
+        <option value="in_progress">W trakcie</option>
+        <option value="done">Ukończone</option>
+      </select>
+    </label>
+
+    <button type="submit">Zapisz zmiany</button>
+  </form>
+</div>
