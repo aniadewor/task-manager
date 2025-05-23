@@ -6,6 +6,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { TaskListComponent } from '../tasks/task-list/task-list.component';
 import { TaskAddComponent } from '../tasks/task-add/task-add.component';
+import { UserListComponent } from '../admin/user-list/user-list.component';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -18,12 +20,14 @@ import { TaskAddComponent } from '../tasks/task-add/task-add.component';
     MatButtonModule,
     MatButtonToggleModule,
     TaskListComponent,
-    TaskAddComponent
+    TaskAddComponent,
+    UserListComponent
   ]
 })
 export class DashboardComponent implements OnInit {
   userData: any;
-  currentView: 'list' | 'add' = 'list';
+  currentView: 'list' | 'add' | 'users' = 'list';
+
 
   constructor(private userService: UserService) {}
 
@@ -32,7 +36,7 @@ export class DashboardComponent implements OnInit {
     console.log('Pobrane userData:', this.userData);
   }
 
-  setView(view: 'list' | 'add') {
+  setView(view: 'list' | 'add' | 'users') {
     this.currentView = view;
   }
 }

@@ -21,10 +21,14 @@ export class UserService {
     }
   }
 
-  // NOWA METODA: Pobierz wszystkich użytkowników
-  async getAllUsers() {
-    const usersCol = collection(this.firestore, 'users');
-    const usersSnap = await getDocs(usersCol);
-    return usersSnap.docs.map(doc => doc.data());
-  }
+
+  async getAllUsers(): Promise<User[]> {
+  const usersCol = collection(this.firestore, 'users');
+  const snapshot = await getDocs(usersCol);
+
+  return snapshot.docs.map(doc => ({
+    uid: doc.id,
+    ...doc.data()
+  } as User));
+}
 }

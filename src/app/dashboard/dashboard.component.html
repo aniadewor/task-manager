@@ -16,15 +16,13 @@
     >
       <mat-button-toggle value="list">Lista zadań</mat-button-toggle>
       <mat-button-toggle value="add">Dodaj zadanie</mat-button-toggle>
+      <mat-button-toggle *ngIf="userData.role === 'admin'" value="users">Użytkownicy</mat-button-toggle>
     </mat-button-toggle-group>
 
     <div class="view-content">
       <app-task-list *ngIf="currentView === 'list'"></app-task-list>
-<app-task-add
-  *ngIf="currentView === 'add'"
-  (taskAdded)="setView('list')"
-></app-task-add>
-
+      <app-task-add *ngIf="currentView === 'add'" (taskAdded)="setView('list')"></app-task-add>
+      <app-user-list *ngIf="currentView === 'users' && userData.role === 'admin'"></app-user-list>
     </div>
   </mat-card>
 </ng-container>

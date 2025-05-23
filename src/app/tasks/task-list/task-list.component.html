@@ -18,21 +18,38 @@
       <mat-option value="priority">Priorytet</mat-option>
     </mat-select>
   </mat-form-field>
+
+  <mat-form-field *ngIf="userRole === 'admin'" appearance="outline">
+    <mat-label>Użytkownik</mat-label>
+    <mat-select [(ngModel)]="filterUser" (selectionChange)="applyFilters()">
+      <mat-option value="all">Wszyscy</mat-option>
+      <mat-option *ngFor="let user of users" [value]="user.uid">
+        {{ user.firstName }} {{ user.lastName }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 </div>
 
 <div class="task-list">
   <mat-card *ngFor="let task of tasks" class="task-card">
     <mat-card-title>{{ task.title }}</mat-card-title>
-    <mat-card-subtitle>Priorytet: {{ task.priority }} | Status: {{ task.status }}</mat-card-subtitle>
+    <mat-card-subtitle>
+      Priorytet: {{ task.priority }} |
+      Status: {{ task.status }}
+      <span *ngIf="userRole === 'admin'">| Użytkownik: {{ task.ownerId }}</span>
+    </mat-card-subtitle>
 
     <mat-card-actions>
-      <button mat-stroked-button color="primary" [routerLink]="['/tasks/edit', task.id]">Edytuj</button>
+      <button mat-stroked-button color="primary" [routerLink]="['/tasks/edit', task.id]">
+        Edytuj
+      </button>
 
       <button
         mat-stroked-button
         color="warn"
         *ngIf="userRole === 'admin' || task.ownerId === currentUserId"
-        (click)="deleteTask(task)">
+        (click)="deleteTask(task)"
+      >
         Usuń
       </button>
 
@@ -40,7 +57,8 @@
         mat-raised-button
         color="accent"
         *ngIf="task.status !== 'done' && (userRole === 'admin' || task.ownerId === currentUserId)"
-        (click)="markAsDone(task)">
+        (click)="markAsDone(task)"
+      >
         Zakończ
       </button>
     </mat-card-actions>

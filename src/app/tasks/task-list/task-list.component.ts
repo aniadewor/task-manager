@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TaskService } from '../../task.service';
@@ -11,7 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Auth } from '@angular/fire/auth';
-import { inject } from '@angular/core';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-task-list',
@@ -31,38 +31,51 @@ import { inject } from '@angular/core';
 })
 export class TaskListComponent implements OnInit {
   tasks: Task[] = [];
+  allTasks: Task[] = [];
   userRole: string = 'user';
   currentUserId: string | null = null;
   filterStatus: string = 'all';
   sortBy: string = 'createdAt';
+  filterUser: string = 'all';
+  users: User[] = [];
   auth = inject(Auth);
 
   constructor(
     private taskService: TaskService,
     private userService: UserService,
-    private snackBar: MatSnackBar,
+    private snackBar: MatSnackBar
   ) {}
 
   async ngOnInit() {
-    this.loadTasks();
-    this.currentUserId = this.taskService.getCurrentUserId();
-    const userData = await this.userService.getCurrentUserData();
-    this.userRole = userData?.role || 'user';
+    try {
+      const user = await this.auth.currentUser;
+      if (!user) return;
 
-    if (this.userRole === 'admin') {
-      this.tasks = await this.taskService.getAllTasks();
-    } else {
-      this.tasks = await this.taskService.getTasksByOwner();
+      const userData = await this.userService.getCurrentUserData();
+      this.userRole = userData?.role || 'user';
+      this.currentUserId = user.uid;
+
+      this.allTasks = await this.taskService.getAllTasks();
+
+      if (this.userRole === 'admin') {
+        this.users = await this.userService.getAllUsers();
+      }
+
+      this.applyFilters();
+    } catch (error) {
+      console.error('Błąd przy inicjalizacji:', error);
+      this.snackBar.open('❌ Nie udało się załadować danych', 'Zamknij', {
+        duration: 4000
+      });
     }
-
-    this.applyFilters();
   }
 
   async deleteTask(task: Task) {
     try {
       await this.taskService.deleteTask(task.id!);
       this.snackBar.open('🗑 Zadanie usunięte!', 'Zamknij', { duration: 3000 });
-      this.loadTasks();
+      this.allTasks = this.allTasks.filter(t => t.id !== task.id);
+      this.applyFilters();
     } catch (error) {
       console.error('Błąd przy usuwaniu:', error);
       this.snackBar.open('❌ Nie udało się usunąć zadania', 'Zamknij', { duration: 4000 });
@@ -73,14 +86,16 @@ export class TaskListComponent implements OnInit {
     try {
       const updatedTask: Partial<Task> = {
         ...task,
-        status: 'done' as 'done',
+        status: 'done',
         completedAt: new Date(),
         updatedAt: new Date()
       };
 
       await this.taskService.updateTask(task.id!, updatedTask);
       this.snackBar.open('✅ Zadanie oznaczone jako ukończone!', 'Zamknij', { duration: 3000 });
-      this.loadTasks();
+      const index = this.allTasks.findIndex(t => t.id === task.id);
+      if (index > -1) this.allTasks[index] = { ...this.allTasks[index], ...updatedTask } as Task;
+      this.applyFilters();
     } catch (error) {
       console.error('Błąd przy aktualizacji:', error);
       this.snackBar.open('❌ Nie udało się zaktualizować zadania', 'Zamknij', { duration: 4000 });
@@ -88,10 +103,16 @@ export class TaskListComponent implements OnInit {
   }
 
   applyFilters(): void {
-    let filtered = [...this.tasks];
+    let filtered = [...this.allTasks];
 
     if (this.filterStatus !== 'all') {
       filtered = filtered.filter(task => task.status === this.filterStatus);
+    }
+
+    if (this.userRole === 'admin' && this.filterUser !== 'all') {
+      filtered = filtered.filter(task => task.ownerId === this.filterUser);
+    } else if (this.userRole !== 'admin') {
+      filtered = filtered.filter(task => task.ownerId === this.currentUserId);
     }
 
     if (this.sortBy === 'createdAt') {
@@ -106,29 +127,5 @@ export class TaskListComponent implements OnInit {
     }
 
     this.tasks = filtered;
-  }
-
-  async loadTasks() {
-    try {
-      const user = await this.auth.currentUser;
-      if (!user) return;
-
-      const allTasks = await this.taskService.getAllTasks();
-      const userData = await this.userService.getCurrentUserData();
-
-      this.currentUserId = user.uid;
-      this.userRole = userData?.role || 'user';
-
-      this.tasks = allTasks.filter(task =>
-        this.userRole === 'admin' || task.ownerId === user.uid
-      );
-
-      this.applyFilters();
-    } catch (error) {
-      console.error('Błąd podczas ładowania zadań:', error);
-      this.snackBar.open('❌ Nie udało się załadować zadań', 'Zamknij', {
-        duration: 4000
-      });
-    }
   }
 }
