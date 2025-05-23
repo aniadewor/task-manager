@@ -15,7 +15,7 @@ export class UserService {
     const userDocRef = doc(this.firestore, 'users', user.uid);
     const userSnap = await getDoc(userDocRef);
     if (userSnap.exists()) {
-      return userSnap.data() as User; // WYMUSZ TYP User tutaj
+      return userSnap.data() as User; 
     } else {
       return null;
     }

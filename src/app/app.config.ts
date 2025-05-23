@@ -14,10 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
-    // ✨ Animacje do Materiala (obowiązkowo)
     provideAnimations(),
-
-    // ✨ Material SnackBar jako provider
     importProvidersFrom(MatSnackBarModule)
   ]
 };
