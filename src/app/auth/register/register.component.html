@@ -2,24 +2,59 @@
   <h2>Rejestracja</h2>
 
   <form (ngSubmit)="onSubmit()" #registerForm="ngForm" class="register-form">
+    
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Email</mat-label>
-      <input matInput type="email" name="email" [(ngModel)]="email" required>
+      <input
+        matInput
+        type="email"
+        name="email"
+        [(ngModel)]="email"
+        #emailRef="ngModel"
+        required
+        email
+      >
+      <mat-error *ngIf="emailRef.hasError('required')">Email jest wymagany</mat-error>
+      <mat-error *ngIf="emailRef.hasError('email')">Nieprawidłowy format email</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Imię</mat-label>
-      <input matInput name="firstName" [(ngModel)]="firstName" required>
+      <input
+        matInput
+        name="firstName"
+        [(ngModel)]="firstName"
+        #firstNameRef="ngModel"
+        required
+      >
+      <mat-error *ngIf="firstNameRef.hasError('required')">Imię jest wymagane</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Nazwisko</mat-label>
-      <input matInput name="lastName" [(ngModel)]="lastName" required>
+      <input
+        matInput
+        name="lastName"
+        [(ngModel)]="lastName"
+        #lastNameRef="ngModel"
+        required
+      >
+      <mat-error *ngIf="lastNameRef.hasError('required')">Nazwisko jest wymagane</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Hasło</mat-label>
-      <input matInput type="password" name="password" [(ngModel)]="password" required>
+      <input
+        matInput
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+        #passwordRef="ngModel"
+        required
+        minlength="6"
+      >
+      <mat-error *ngIf="passwordRef.hasError('required')">Hasło jest wymagane</mat-error>
+      <mat-error *ngIf="passwordRef.hasError('minlength')">Hasło musi mieć min. 6 znaków</mat-error>
     </mat-form-field>
 
     <button mat-flat-button color="primary" type="submit" [disabled]="registerForm.invalid">

@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
 
 @Component({
@@ -27,28 +27,35 @@ export class LoginComponent {
   password: string = '';
   error: string = '';
 
-  constructor(private auth: Auth, private router: Router) {}
+  constructor(private auth: Auth, private router: Router,  private snackBar: MatSnackBar) {}
 
-  async onSubmit() {
-    try {
-      await signInWithEmailAndPassword(this.auth, this.email, this.password);
-      // Po zalogowaniu przekieruj na stronę główną lub dashboard (do zmiany później)
-      this.router.navigate(['/dashboard']);
-    } catch (error: any) {
-      this.error = this.getErrorMessage(error.code);
-    }
-  }
+ async onSubmit() {
+  try {
+    const res = await signInWithEmailAndPassword(this.auth, this.email, this.password);
 
-  getErrorMessage(code: string): string {
-    switch (code) {
-      case 'auth/user-not-found':
-        return 'Nie ma takiego użytkownika!';
-      case 'auth/wrong-password':
-        return 'Błędne hasło!';
-      case 'auth/invalid-email':
-        return 'Nieprawidłowy email!';
-      default:
-        return 'Coś poszło nie tak, spróbuj ponownie!';
-    }
+    this.snackBar.open('✅ Zalogowano pomyślnie!', 'Zamknij', {
+      duration: 3000
+    });
+
+    this.router.navigate(['/dashboard']);
+  } catch (error: any) {
+    this.error = this.getErrorMessage(error.code);
+
+    this.snackBar.open('❌ Błąd logowania: ' + this.error, 'Zamknij', {
+      duration: 5000
+    });
   }
+}
+
+getErrorMessage(code: string): string {
+  switch (code) {
+    case 'auth/user-not-found':
+    case 'auth/wrong-password':
+      return 'Nieprawidłowy email lub hasło!';
+    case 'auth/invalid-email':
+      return 'Nieprawidłowy format email!';
+    default:
+      return 'Coś poszło nie tak. Spróbuj ponownie.';
+  }
+}
 }

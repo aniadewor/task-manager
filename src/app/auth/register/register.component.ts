@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { Auth, createUserWithEmailAndPassword, UserCredential } from '@angular/fire/auth';
 import { Firestore, doc, setDoc } from '@angular/fire/firestore';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-register',
@@ -18,6 +19,7 @@ import { Firestore, doc, setDoc } from '@angular/fire/firestore';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatSnackBarModule,
     RouterModule
   ],
   templateUrl: './register.component.html',
@@ -33,32 +35,35 @@ export class RegisterComponent {
   constructor(
     private auth: Auth,
     private router: Router,
-    private firestore: Firestore
+    private firestore: Firestore,
+    private snackBar: MatSnackBar
   ) {}
 
   async onSubmit() {
-    try {
-      const cred: UserCredential = await createUserWithEmailAndPassword(
-        this.auth,
-        this.email,
-        this.password
-      );
+  try {
+    const cred = await createUserWithEmailAndPassword(this.auth, this.email, this.password);
+    await setDoc(doc(this.firestore, 'users', cred.user.uid), {
+      uid: cred.user.uid,
+      email: this.email,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      role: 'user',
+      createdAt: new Date()
+    });
 
-      // Zapisz dane użytkownika do Firestore
-      await setDoc(doc(this.firestore, 'users', cred.user.uid), {
-        uid: cred.user.uid,
-        email: this.email,
-        firstName: this.firstName,
-        lastName: this.lastName,
-        role: 'user', // domyślnie user, admina ustawisz ręcznie
-        createdAt: new Date()
-      });
+    this.snackBar.open('Rejestracja zakończona sukcesem 🎉', 'Zamknij', {
+      duration: 3000,
+    });
 
-      this.router.navigate(['/login']);
-    } catch (error: any) {
-      this.error = this.getErrorMessage(error.code);
-    }
+    this.router.navigate(['/login']);
+  } catch (error: any) {
+    this.error = this.getErrorMessage(error.code);
+
+    this.snackBar.open('❌ Błąd rejestracji: ' + this.error, 'Zamknij', {
+      duration: 5000,
+    });
   }
+}
 
   getErrorMessage(code: string): string {
     switch (code) {

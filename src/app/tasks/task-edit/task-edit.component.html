@@ -1,35 +1,68 @@
 <div *ngIf="task" class="edit-container">
   <h2>Edycja zadania: {{ task.title }}</h2>
 
-  <form (ngSubmit)="saveTask()" class="edit-form">
+  <form (ngSubmit)="saveTask()" #editForm="ngForm" class="edit-form">
+
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Tytuł</mat-label>
-      <input matInput type="text" [(ngModel)]="task.title" name="title" required />
+      <input
+        matInput
+        type="text"
+        [(ngModel)]="task.title"
+        name="title"
+        #titleRef="ngModel"
+        required
+      />
+      <mat-error *ngIf="titleRef.hasError('required')">Tytuł jest wymagany</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Opis</mat-label>
-      <textarea matInput rows="4" [(ngModel)]="task.description" name="description"></textarea>
+      <textarea
+        matInput
+        rows="4"
+        [(ngModel)]="task.description"
+        name="description"
+      ></textarea>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Priorytet</mat-label>
-      <mat-select [(ngModel)]="task.priority" name="priority">
+      <mat-select
+        [(ngModel)]="task.priority"
+        name="priority"
+        #priorityRef="ngModel"
+        required
+      >
         <mat-option value="low">Niski</mat-option>
         <mat-option value="medium">Średni</mat-option>
         <mat-option value="high">Wysoki</mat-option>
       </mat-select>
+      <mat-error *ngIf="priorityRef.hasError('required')">Wybierz priorytet</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Status</mat-label>
-      <mat-select [(ngModel)]="task.status" name="status">
+      <mat-select
+        [(ngModel)]="task.status"
+        name="status"
+        #statusRef="ngModel"
+        required
+      >
         <mat-option value="todo">Do zrobienia</mat-option>
         <mat-option value="in_progress">W trakcie</mat-option>
         <mat-option value="done">Ukończone</mat-option>
       </mat-select>
+      <mat-error *ngIf="statusRef.hasError('required')">Wybierz status</mat-error>
     </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit">Zapisz zmiany</button>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="editForm.invalid"
+    >
+      Zapisz zmiany
+    </button>
   </form>
 </div>

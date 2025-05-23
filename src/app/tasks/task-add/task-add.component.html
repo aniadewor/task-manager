@@ -1,17 +1,38 @@
 <div class="add-container">
   <h2>Dodaj nowe zadanie</h2>
 
-  <form (ngSubmit)="addTask()" class="add-form">
+  <form (ngSubmit)="addTask()" #taskForm="ngForm" class="add-form">
+
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Tytuł</mat-label>
-      <input matInput type="text" [(ngModel)]="task.title" name="title" required />
+      <input
+        matInput
+        type="text"
+        [(ngModel)]="task.title"
+        name="title"
+        #titleRef="ngModel"
+        required
+      />
+      <mat-error *ngIf="titleRef.hasError('required')">Tytuł jest wymagany</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Opis</mat-label>
-      <textarea matInput rows="4" [(ngModel)]="task.description" name="description"></textarea>
+      <textarea
+        matInput
+        rows="4"
+        [(ngModel)]="task.description"
+        name="description"
+      ></textarea>
     </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit">Dodaj</button>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="taskForm.invalid"
+    >
+      Dodaj
+    </button>
   </form>
 </div>
