@@ -1,0 +1,10 @@
+<div *ngIf="userData; else loading">
+  <h2>Witaj, {{ userData.firstName }} {{ userData.lastName }}!</h2>
+  <p>Twoja rola: <b>{{ userData.role }}</b></p>
+</div>
+<ng-template #loading>
+  <p>Ładowanie danych użytkownika...</p>
+</ng-template>
+<div *ngIf="userData.role === 'admin'">
+  <button mat-raised-button color="accent">Panel admina</button>
+</div>
