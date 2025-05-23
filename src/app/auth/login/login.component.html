@@ -1,6 +1,7 @@
 <div class="login-container">
   <h2>Logowanie</h2>
-  <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+
+  <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="login-form">
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Email</mat-label>
       <input matInput type="email" name="email" [(ngModel)]="email" required>
@@ -15,10 +16,13 @@
       Zaloguj się
     </button>
   </form>
+
   <div *ngIf="error" class="error-message">
     {{ error }}
   </div>
-  <p>
-    Nie masz konta? <a routerLink="/register">Zarejestruj się</a>
+
+  <p class="register-link">
+    Nie masz konta?
+    <a routerLink="/register">Zarejestruj się</a>
   </p>
 </div>

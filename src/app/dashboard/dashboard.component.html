@@ -1,10 +1,36 @@
-<div *ngIf="userData; else loading">
-  <h2>Witaj, {{ userData.firstName }} {{ userData.lastName }}!</h2>
-  <p>Twoja rola: <b>{{ userData.role }}</b></p>
-</div>
+<ng-container *ngIf="userData; else loading">
+  <mat-card class="dashboard-card">
+    <mat-card-title>
+      Witaj, {{ userData.firstName }} {{ userData.lastName }}!
+    </mat-card-title>
+    <mat-card-subtitle>
+      Twoja rola: <b>{{ userData.role }}</b>
+    </mat-card-subtitle>
+
+    <mat-button-toggle-group
+      name="viewToggle"
+      [value]="currentView"
+      (change)="setView($event.value)"
+      appearance="legacy"
+      class="toggle-group"
+    >
+      <mat-button-toggle value="list">Lista zadań</mat-button-toggle>
+      <mat-button-toggle value="add">Dodaj zadanie</mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <div class="view-content">
+      <app-task-list *ngIf="currentView === 'list'"></app-task-list>
+<app-task-add
+  *ngIf="currentView === 'add'"
+  (taskAdded)="setView('list')"
+></app-task-add>
+
+    </div>
+  </mat-card>
+</ng-container>
+
 <ng-template #loading>
-  <p>Ładowanie danych użytkownika...</p>
+  <mat-card class="dashboard-card">
+    <mat-card-content>Ładowanie danych użytkownika...</mat-card-content>
+  </mat-card>
 </ng-template>
-<div *ngIf="userData.role === 'admin'">
-  <button mat-raised-button color="accent">Panel admina</button>
-</div>

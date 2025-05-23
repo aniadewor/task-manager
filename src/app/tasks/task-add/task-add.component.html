@@ -1,6 +1,17 @@
-<h2>Dodaj nowe zadanie</h2>
-<form (ngSubmit)="addTask()">
-  <input type="text" [(ngModel)]="task.title" name="title" placeholder="Tytuł" required>
-  <textarea [(ngModel)]="task.description" name="description" placeholder="Opis"></textarea>
-  <button type="submit">Dodaj</button>
-</form>
+<div class="add-container">
+  <h2>Dodaj nowe zadanie</h2>
+
+  <form (ngSubmit)="addTask()" class="add-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Tytuł</mat-label>
+      <input matInput type="text" [(ngModel)]="task.title" name="title" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Opis</mat-label>
+      <textarea matInput rows="4" [(ngModel)]="task.description" name="description"></textarea>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Dodaj</button>
+  </form>
+</div>

@@ -4,11 +4,19 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TaskService } from '../../task.service';
 import { Task } from '../../models/task.model';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-task-edit',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,  MatFormFieldModule,
+  MatInputModule,
+  MatSelectModule,
+  MatButtonModule],
+  
   templateUrl: './task-edit.component.html',
   styleUrls: ['./task-edit.component.scss']
 })

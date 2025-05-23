@@ -5,6 +5,10 @@ import { TaskService } from '../../task.service';
 import { Task } from '../../models/task.model';
 import { UserService } from '../../user.service';
 import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-task-list',
@@ -12,7 +16,11 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     RouterModule,
-    FormsModule// <-- to MUSI tu być
+    FormsModule,
+     MatCardModule,
+  MatButtonModule,
+  MatSelectModule,
+  MatFormFieldModule// <-- to MUSI tu być
   ],
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.scss']

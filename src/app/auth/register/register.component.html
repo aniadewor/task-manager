@@ -1,21 +1,22 @@
 <div class="register-container">
   <h2>Rejestracja</h2>
-  <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+
+  <form (ngSubmit)="onSubmit()" #registerForm="ngForm" class="register-form">
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Email</mat-label>
       <input matInput type="email" name="email" [(ngModel)]="email" required>
     </mat-form-field>
 
-<mat-form-field appearance="outline" class="full-width">
-    <mat-label>Imię</mat-label>
-    <input matInput name="firstName" [(ngModel)]="firstName" required>
-  </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Imię</mat-label>
+      <input matInput name="firstName" [(ngModel)]="firstName" required>
+    </mat-form-field>
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Nazwisko</mat-label>
-    <input matInput name="lastName" [(ngModel)]="lastName" required>
-  </mat-form-field>
-  
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nazwisko</mat-label>
+      <input matInput name="lastName" [(ngModel)]="lastName" required>
+    </mat-form-field>
+
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Hasło</mat-label>
       <input matInput type="password" name="password" [(ngModel)]="password" required>
@@ -25,10 +26,12 @@
       Zarejestruj się
     </button>
   </form>
-  <p>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <p class="login-link">
     Masz już konto? <a routerLink="/login">Zaloguj się</a>
   </p>
-</div>
-<div *ngIf="error" class="error-message">
-  {{ error }}
 </div>
