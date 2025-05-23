@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
 
 @Component({
@@ -17,7 +17,8 @@ import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSnackBarModule
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
@@ -31,6 +32,7 @@ export class LoginComponent {
 
  async onSubmit() {
   try {
+    console.log('Próba logowania z:', this.email, this.password);
     const res = await signInWithEmailAndPassword(this.auth, this.email, this.password);
 
     this.snackBar.open('✅ Zalogowano pomyślnie!', 'Zamknij', {

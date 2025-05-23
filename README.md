@@ -1,59 +1,68 @@
-# TaskManager
+# Task Manager
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.5.
+Aplikacja webowa stworzona w Angularze 19 z wykorzystaniem Firebase, służąca do zarządzania zadaniami. Umożliwia rejestrację, logowanie, zarządzanie własnymi zadaniami oraz – w przypadku konta administratora – przeglądanie i zarządzanie kontami użytkowników.
 
-## Development server
+Projekt został zrealizowany przez Annę Dewor. Repozytorium znajduje się pod adresem:  
+https://github.com/aniadewor/task-manager
 
-To start a local development server, run:
+## Funkcjonalności
 
-```bash
+- Rejestracja i logowanie użytkownika (Firebase Authentication)
+- Obsługa ról: użytkownik (user) i administrator (admin)
+- Dashboard z możliwością przełączania widoków (lista zadań, dodanie zadania, panel użytkowników)
+- CRUD zadań – tworzenie, edycja, usuwanie, oznaczanie jako ukończone
+- Filtrowanie zadań po statusie i sortowanie po dacie dodania lub priorytecie
+- Panel administratora z listą zarejestrowanych użytkowników i możliwością ich usunięcia
+- Obsługa błędów (try/catch) oraz komunikaty dla użytkownika z wykorzystaniem Angular Material (MatSnackBar)
+- Responsywny interfejs oparty o Angular Material
+
+## Technologie
+
+- Angular 19 (Standalone Components, Routing)
+- Firebase (Authentication, Firestore)
+- Angular Material
+- TypeScript
+- SCSS
+
+## Uruchomienie projektu
+
+1. Sklonuj repozytorium:
+
+git clone https://github.com/aniadewor/task-manager.git
+cd task-manager
+
+
+2. Zainstaluj zależności:
+
+npm install
+
+
+3. Skonfiguruj dane dostępowe do Firebase w pliku `src/environments/environment.ts`:
+
+```ts
+export const environment = {
+  firebase: {
+    apiKey: '...',
+    authDomain: '...',
+    projectId: '...',
+    storageBucket: '...',
+    messagingSenderId: '...',
+    appId: '...'
+  }
+};
+Uruchom projekt lokalnie:
 ng serve
-```
+Aplikacja będzie dostępna pod adresem http://localhost:4200.
+Struktura projektu
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+src/app/
+├── auth/          - komponenty logowania i rejestracji
+├── dashboard/     - główny widok użytkownika po zalogowaniu
+├── tasks/         - komponenty związane z zadaniami
+├── admin/         - komponent listy użytkowników dla admina
+├── models/        - interfejsy danych (Task, User)
+├── services/      - serwisy do obsługi Firebase i danych użytkownika
+Konta testowe
 
-## Code scaffolding
+Aby przetestować różne role, można założyć konta w Firebase Authentication i przypisać odpowiednią rolę (admin lub user) w kolekcji users w Firestore.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
