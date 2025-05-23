@@ -2,7 +2,6 @@
   <h2>Dodaj nowe zadanie</h2>
 
   <form (ngSubmit)="addTask()" #taskForm="ngForm" class="add-form">
-
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Tytuł</mat-label>
       <input
@@ -24,6 +23,46 @@
         [(ngModel)]="task.description"
         name="description"
       ></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Priorytet</mat-label>
+      <mat-select
+        [(ngModel)]="task.priority"
+        name="priority"
+        required
+        #priorityRef="ngModel"
+      >
+        <mat-option value="low">Niski</mat-option>
+        <mat-option value="medium">Średni</mat-option>
+        <mat-option value="high">Wysoki</mat-option>
+      </mat-select>
+      <mat-error *ngIf="priorityRef.hasError('required')">Priorytet jest wymagany</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Status</mat-label>
+      <mat-select
+        [(ngModel)]="task.status"
+        name="status"
+        required
+        #statusRef="ngModel"
+      >
+        <mat-option value="todo">Do zrobienia</mat-option>
+        <mat-option value="in_progress">W trakcie</mat-option>
+        <mat-option value="done">Ukończone</mat-option>
+      </mat-select>
+      <mat-error *ngIf="statusRef.hasError('required')">Status jest wymagany</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Termin realizacji</mat-label>
+      <input
+        matInput
+        type="date"
+        [(ngModel)]="task.dueDate"
+        name="dueDate"
+      />
     </mat-form-field>
 
     <button

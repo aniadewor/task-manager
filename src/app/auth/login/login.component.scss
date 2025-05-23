@@ -3,6 +3,9 @@
   margin: 60px auto;
   padding: 24px;
   text-align: center;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .login-form {
@@ -22,4 +25,33 @@
 
 .register-link {
   margin-top: 20px;
+  font-size: 14px;
+}
+
+/* Tablet (≤ 768px) */
+@media (max-width: 768px) {
+  .login-container {
+    margin: 40px 20px;
+    padding: 20px;
+  }
+
+  .register-link {
+    font-size: 13px;
+  }
+}
+
+/* Telefon (≤ 480px) */
+@media (max-width: 480px) {
+  .login-container {
+    margin: 30px 16px;
+    padding: 16px;
+  }
+
+  .login-form {
+    gap: 16px;
+  }
+
+  .register-link {
+    font-size: 12px;
+  }
 }

@@ -7,3 +7,28 @@
 mat-list-item {
   border-bottom: 1px solid #e0e0e0;
 }
+
+/* Responsywność */
+@media (max-width: 768px) {
+  .user-list-card {
+    margin: 12px;
+    padding: 12px;
+  }
+
+  mat-list-item {
+    font-size: 14px;
+    padding: 8px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .user-list-card {
+    padding: 8px;
+  }
+
+  mat-list-item {
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 13px;
+  }
+}

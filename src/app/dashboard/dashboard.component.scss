@@ -2,13 +2,45 @@
   max-width: 800px;
   margin: 40px auto;
   padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .toggle-group {
   margin-top: 20px;
   margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .view-content {
   margin-top: 20px;
+}
+
+/* Tablet (≤ 768px) */
+@media (max-width: 768px) {
+  .dashboard-card {
+    margin: 30px 16px;
+    padding: 16px;
+  }
+
+  .toggle-group {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* Telefon (≤ 480px) */
+@media (max-width: 480px) {
+  .dashboard-card {
+    margin: 20px 12px;
+    padding: 12px;
+  }
+
+  .toggle-group {
+    gap: 8px;
+  }
 }
